@@ -1,9 +1,10 @@
+
 	<?
 		$id = $_REQUEST['id'];
 	?>
 	<link rel="stylesheet" type="test/css" href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/jquery.dataTables.css" />
 	<h2>
-		List of Contact Methods
+		List of Products from <?=$model[0]['SuplierName']?>
 	</h2>
 	
 	<style type="text/css">
@@ -24,24 +25,33 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
-				<th>Contact Method</th>
-				<th>Value</th>
-				<th>User's Name</th>
+				
+				<th>Name</th>
+				<th>Price</th>
+				<th>Description</th>
+				<th>Picture URL</th>
+				<th>Category</th>
 				<th>Edit</th>
 			</tr>
 		</thead>
 		<tbody>
 			
 			<? foreach ($model as $row): ?>
-				<tr class="<?=$id==$row['id'] ? "highlighted" : "" ?>">
-					<td><?=$row['ContactTypeName']?></td>
-					<td><?=$row['Value']?></td>
-					<td><?=$row['LastName']?>, <?=$row['FirstName']?></td>
+				<tr>
+					
+					<td><?=$row['ProductName']?></td>
+					<td><?=$row['Price']?></td>
+					<td><?=$row['Description']?></td>
+					<td><?=$row['Picture_Url']?></td>
+					<? foreach (Keywords::SelectListFor(13) as $row2): ?>
+						<?if($row['Catergory_Keyword_id'] == $row2['id']):?><td><?=$row2['Name']?></td><?endif;?>
+					<?endforeach;?>
+					
 					<td>
-						<div class="btn-grou[]">
-							<a class="btn btn-sm btn-default glyphicon glyphicon-edit" title="Edit" href="?action=edit&id=<?=$row['id']?>"></a>
-							<a class="btn btn-sm btn-default glyphicon glyphicon-eye-open" title="Details" href="http://cs.newpaltz.edu/~n02004019/2014Spring/Final/Controllers/Users.php?action=details&id=<?=$row['User_id']?>"></a>
-							<a class="btn btn-sm btn-default glyphicon glyphicon-trash" title="Delete" href="?action=delete&format=json&id=<?=$row['id']?>"></a>
+						<div class="btn-group">
+							<a class="btn btn-sm btn-default glyphicon glyphicon-edit" title="Edit" href="http://cs.newpaltz.edu/~n02004019/2014Spring/Final/Controllers/Products.php?action=edit&id=<?=$row['Product_id']?>"></a>
+							<a class="btn btn-sm btn-default glyphicon glyphicon-eye-open disabled" title="Details" href="?action=edit&id=<?=$row['id']?>"></a>
+							<a class="btn btn-sm btn-default glyphicon glyphicon-trash" title="Delete" href="?action=delete&format=json&id=<?=$row['Product_id']?>"></a>
 						</div>
 					</td>
 				</tr>
@@ -84,8 +94,8 @@
 					var that = this;
 					event.preventDefault();
 					$.get(this.href, function(data){
-						
-						if(confirm("Are you sure that you want to delete " + data.data.FirstName + " " + data.data.LastName + "'s Contact method?")){
+						alert("BROKEN")
+						if(confirm("Are you sure that you want to delete this product?" )){
 							$.post(that.href, function(data){
 								if(data.success){
 									//msg user success

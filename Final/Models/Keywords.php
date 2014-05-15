@@ -1,43 +1,13 @@
 <?php
-	include_once __DIR__ . '/../inc/functions.php';
-	
-	class Users  {
-		
-		static public function Get($id = null)
-		{
-			if($id == null){
-				//	Get all records
-				
-				return fetch_all("SELECT * FROM 2014Spring_Keywords");
-			}else{
-				// Get on record
-			}
-		}
-		
-		static public function Create($row)
-		{
-			
-		}
 
-		static public function Blank()
-		{
-			return array( 'id' => null);
-		}
+	/**
+	 * 
+	 */
+	class Keywords {
 		
-		static public function Update($row)
-		{
-				
+		public static function SelectListFor($TypeId) {
+			$sql = "SELECT id, Name FROM 2014Spring_Keywords WHERE Parent_id = $TypeId ";
+			return fetch_all($sql);
 		}
-	
-		static public function Delete($id)
-		{
-			
-		}
-		
-		static public function Validate($row)
-		{
-			
-		}
-		
 	}
 	

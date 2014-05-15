@@ -1,43 +1,85 @@
 <?php
+
 	include_once __DIR__ . '/../inc/functions.php';
 	
-	class Users  {
+	
+	class Products  {
 		
-		static public function Get($id = null)
+		static public function Get($id = null, $category_id = null)
 		{
-			if($id == null){
-				//	Get all records
+			$sql = "SELECT *
+					FROM 2014Spring_Products";
 				
-				return fetch_all("SELECT * FROM 2014Spring_Products");
+			if($id){
+				// Get one record
+				$sql .= " WHERE id = $id ";
+			
+				if(($results = fetch_all($sql)) && count($results) > 0){
+				
+					return $results[0];
+				}else{
+						
+					return null;
+				}
+			}elseif($category_id){
+			
+				$sql .= " WHERE Catergory_Keyword_id = $category_id ";
+				return fetch_all($sql);
 			}else{
-				// Get on record
+				
+				//	Get all records
+				return fetch_all($sql);
 			}
 		}
 		
-		static public function Create($row)
+		
+		static public function GetCategories()
 		{
+			$sql = "SELECT k.* FROM 2014Spring_Product_Keywords pk LEFT JOIN 2014Spring_Keywords k ON pk.Keyword_id = k.id";
+			return fetch_all($sql);
+		}
+		
+		static public function Save(&$row)
+		{
+			throw new Exception("Not Implemented", 1);
 			
+			return $error ? array ('sql error' => $error) : false;
 		}
 
 		static public function Blank()
 		{
 			return array( 'id' => null);
 		}
-		
-		static public function Update($row)
-		{
-				
-		}
-	
+			
 		static public function Delete($id)
 		{
+			$conn = GetConnection();
+			$sql = "DELETE FROM 2014Spring_Products WHERE id = $id";
+			//echo $sql;
+			$results = $conn->query($sql);
+			$error = $conn->error;
+			$conn->close();
 			
+			return $error ? array ('sql error' => $error) : false;
 		}
 		
 		static public function Validate($row)
 		{
+			$errors = array();
+			if(empty($row['Name'])) $errors['Name'] = "is required";
 			
+			return count($errors) > 0 ? $errors : false ;
 		}
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
